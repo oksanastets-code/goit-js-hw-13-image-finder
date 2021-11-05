@@ -1,7 +1,25 @@
-const url = 'https://api.pexels.com/v1/search?query=cats&&per_page=12';
-const options = {
-    headers: {
-        Authorization: '563492ad6f917000010000010a9b52cfbb704750be035a6140194de6',
-    }
+import GalleryApiService from './apiService.js';
+import picturesTpl from '../templates/picture-card.hbs';
+
+const refs = {
+  searchForm: document.querySelector('#search-form'),
+  galleryContainer: document.querySelector('.gallery'),
+  loadMmoreBtn: document.querySelector('[data-action="load-more"]'),
 };
-fetch(url, options).then(r => r.json()).then(console.log);
+refs.searchForm.addEventListener('submit', onSearch);
+refs.loadMmoreBtn.addEventListener('click', onLoadMore);
+
+const galleryApiService = new GalleryApiService();
+
+function onSearch(e) {
+  e.preventDefault();
+  galleryApiService.query = e.currentTarget.elements.query.value;
+    galleryApiService.resetPage();
+    galleryApiService.fetchPictures().then(appendGalleryMarkup);
+}
+function onLoadMore() {
+  galleryApiService.fetchPictures().then(appendGalleryMarkup);
+}
+function appendGalleryMarkup(hits) {
+    refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(hits));
+}
