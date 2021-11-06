@@ -12,6 +12,13 @@ export default class GalleryApiService {
         //         Authorization: '563492ad6f917000010000010a9b52cfbb704750be035a6140194de6',
         //     }
         // };
+        //  return fetch(url, options)
+        //     .then(r => r.json())
+        //     .then(data => {
+        //         console.log(data);
+        //     this.incrementPage();
+        //     return data.photoes;
+        // });
 
 const url = `https://pixabay.com/api/?key=24206659-085fc8a8bf5db593be5a49f71&q=${this.searchQuery}&image_type=photo&page=${this.page}&per_page=12`;
         

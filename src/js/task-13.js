@@ -20,6 +20,9 @@ function onSearch(e) {
 function onLoadMore() {
   galleryApiService.fetchPictures().then(appendGalleryMarkup);
 }
+// function appendGalleryMarkup(photoes) {
+//     refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(photoes));
+// }
 function appendGalleryMarkup(hits) {
     refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(hits));
 }
