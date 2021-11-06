@@ -13,6 +13,7 @@ const galleryApiService = new GalleryApiService();
 
 function onSearch(e) {
   e.preventDefault();
+  clearGalleryContainer();
   galleryApiService.query = e.currentTarget.elements.query.value;
     galleryApiService.resetPage();
     galleryApiService.fetchPictures().then(appendGalleryMarkup);
@@ -25,4 +26,7 @@ function onLoadMore() {
 // }
 function appendGalleryMarkup(hits) {
     refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(hits));
+}
+function clearGalleryContainer() {
+  refs.galleryContainer.innerHTML = '';
 }
