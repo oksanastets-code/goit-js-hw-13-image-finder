@@ -1,3 +1,5 @@
+const API_KEY = '24206659-085fc8a8bf5db593be5a49f71';
+
 export default class GalleryApiService {
     constructor() {
         this.searchQuery = '';
@@ -6,6 +8,7 @@ export default class GalleryApiService {
     fetchPictures() {
         console.log(this);
 
+        // Option with pexels.com
         // const url = `https://api.pexels.com/v1/search?query=${this.searchQuery}&page=${this.page}&per_page=12`;
         // const options = {
         //     headers: {
@@ -20,10 +23,9 @@ export default class GalleryApiService {
         //     return data.photoes;
         // });
 
-const url = `https://pixabay.com/api/?key=24206659-085fc8a8bf5db593be5a49f71&q=${this.searchQuery}&image_type=photo&page=${this.page}&per_page=12`;
-        
-
-
+        // Option witn pixabay.com
+       const url =`https://pixabay.com/api/?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${API_KEY}`;
+ 
         return fetch(url)
             .then(r => r.json())
             .then(data => {
