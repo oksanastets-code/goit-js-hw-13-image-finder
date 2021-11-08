@@ -1,11 +1,11 @@
 import GalleryApiService from './apiService.js';
 import picturesTpl from '../templates/picture-card.hbs';
-import LoadMoreBtn from './load-more-btn.js';
+import LoadMoreBtn from './components/load-more-btn.js';
+import * as basicLightbox from 'basiclightbox';
+
 const refs = {
   searchForm: document.querySelector('#search-form'),
   galleryContainer: document.querySelector('.gallery'),
-  // box: document.getElementById('#box'),
-  // loadMmoreBtn: document.querySelector('[data-action="load-more"]'),
 };
 const loadMoreBtn = new LoadMoreBtn({
   selector: '[data-action="load-more"]',
@@ -14,7 +14,7 @@ const loadMoreBtn = new LoadMoreBtn({
 
 refs.searchForm.addEventListener('submit', onSearch); //, handlerScroll);
 loadMoreBtn.refs.button.addEventListener('click', onLoadArticles); //, handlerScroll);
-
+refs.galleryContainer.addEventListener('click', openLigthbox);
 const galleryApiService = new GalleryApiService();
 
 function onSearch(e) {
@@ -49,4 +49,17 @@ function appendGalleryMarkup(hits) {
 }
 function clearGalleryContainer() {
   refs.galleryContainer.innerHTML = '';
+}
+
+function openLigthbox(e) {
+   // Quard Clause
+    if (e.target.nodeName !== 'IMG') {
+        return;
+  }
+
+  const instance = basicLightbox.create(`
+    <img src="${e.target.dataset.source}" width="800" height="600">
+`);
+
+instance.show()
 }
