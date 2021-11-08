@@ -40,10 +40,6 @@ function onLoadArticles() {
 //   refs.box.scrollIntoView({block: "end", behavior: "smooth"});
 // }
 
-// Option with pexels.com
-// function appendGalleryMarkup(photoes) {
-//     refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(photoes));
-// }
 function appendGalleryMarkup(hits) {
     refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(hits));
 }
@@ -56,10 +52,8 @@ function openLigthbox(e) {
     if (e.target.nodeName !== 'IMG') {
         return;
   }
-
   const instance = basicLightbox.create(`
     <img src="${e.target.dataset.source}" width="800" height="600">
 `);
-
 instance.show()
 }
