@@ -11,42 +11,41 @@ const loadMoreBtn = new LoadMoreBtn({
   selector: '[data-action="load-more"]',
   hidden: true,
 });
-
-refs.searchForm.addEventListener('submit', onSearch); //, handlerScroll);
-loadMoreBtn.refs.button.addEventListener('click', onLoadArticles); //, handlerScroll);
-refs.galleryContainer.addEventListener('click', openLigthbox);
 const galleryApiService = new GalleryApiService();
+
+
+refs.searchForm.addEventListener('submit', onSearch);
+loadMoreBtn.refs.button.addEventListener('click', onLoadArticles);
+refs.galleryContainer.addEventListener('click', openLigthbox);
 
 function onSearch(e) {
   e.preventDefault();
   clearGalleryContainer();
   galleryApiService.query = e.currentTarget.elements.query.value;
-loadMoreBtn.show();
+  loadMoreBtn.show();
   galleryApiService.resetPage();
-  
+
   onLoadArticles();
- 
 }
+
 function onLoadArticles() {
   loadMoreBtn.disable();
-  galleryApiService.fetchPictures().then((articles) => {
-    appendGalleryMarkup(articles),
-      loadMoreBtn.enable()
-  });
-  }
-
-//Smooth scroll :(
-// function handlerScroll() {
-//   refs.box.scrollIntoView({block: "end", behavior: "smooth"});
-// }
-
-function appendGalleryMarkup(hits) {
-    refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(hits));
+  galleryApiService
+    .fetchPictures()
+    .then(articles => {
+      appendGalleryMarkup(articles), loadMoreBtn.enable();
+    }).then(handlerScroll);
 }
+// Render page
+function appendGalleryMarkup(hits) {
+  refs.galleryContainer.insertAdjacentHTML('beforeend', picturesTpl(hits));
+}
+//  By start searching
 function clearGalleryContainer() {
   refs.galleryContainer.innerHTML = '';
 }
 
+// Big picture by clicking on it
 function openLigthbox(e) {
    // Quard Clause
     if (e.target.nodeName !== 'IMG') {
@@ -57,3 +56,11 @@ function openLigthbox(e) {
 `);
 instance.show()
 }
+
+//Smooth scroll 
+function handlerScroll() {
+  refs.galleryContainer.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end'
+  });
+  }
