@@ -24,6 +24,7 @@ function onSearch(e) {
   galleryApiService.query = e.currentTarget.elements.query.value;
   if (!galleryApiService.query.trim()) {
     console.log('error');
+    window.location.reload(true); 
     return;
   }
   loadMoreBtn.show();
