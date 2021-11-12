@@ -6,15 +6,16 @@ export default class GalleryApiService {
         this.page = 1;
     }
     fetchPictures() {
-       const url =`${BASE_URL}/?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${API_KEY}`;
- 
-        return fetch(url)
-            .then(r => r.json())
-            .then(data => {
-                console.log(data);
-            this.incrementPage();
-            return data.hits;
-        });
+        
+        const url = `${BASE_URL}/?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=12&key=${API_KEY}`; 
+                    return fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    console.log(data);
+                    this.incrementPage();
+                    return data.hits;
+                });
+        
     }
     incrementPage() {
         this.page += 1;
