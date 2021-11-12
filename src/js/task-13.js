@@ -2,11 +2,13 @@ import GalleryApiService from './apiService.js';
 import picturesTpl from '../templates/picture-card.hbs';
 import LoadMoreBtn from './components/load-more-btn.js';
 import * as basicLightbox from 'basiclightbox';
+import { myError } from './components/pnotify.js';
 
 const refs = {
   searchForm: document.querySelector('#search-form'),
   galleryContainer: document.querySelector('.gallery'),
 };
+
 // Exemplars
 const loadMoreBtn = new LoadMoreBtn({
   selector: '[data-action="load-more"]',
@@ -22,9 +24,10 @@ function onSearch(e) {
   e.preventDefault();
   clearGalleryContainer();
   galleryApiService.query = e.currentTarget.elements.query.value;
+  // Verification on empty request
   if (!galleryApiService.query.trim()) {
-    console.log('error');
-    window.location.reload(true); 
+    myError('Please, enter keyword!');
+    reloadOnError();
     return;
   }
   loadMoreBtn.show();
@@ -38,13 +41,19 @@ function onLoadArticles() {
   galleryApiService
     .fetchPictures()
     .then(articles => {
+      if (articles.length === 0) {
+        myError('Wrong request!');
+        reloadOnError();
+        return;
+      }
       appendGalleryMarkup(articles);
-// when it is a last picture in collection
+      // when it is a last picture in collection
       if (articles.length < 12) {
         loadMoreBtn.hide();
-      } else loadMoreBtn.enable();
+      } loadMoreBtn.enable();
     })
-    .then(handlerScroll);
+    .then(handlerScroll)
+    .catch((error)=> 'error');
 }
 // Render page
 function appendGalleryMarkup(hits) {
@@ -73,4 +82,10 @@ function handlerScroll() {
     behavior: 'smooth',
     block: 'end',
   });
+}
+// To remove wrong request
+function reloadOnError() { 
+  setTimeout(() => {
+      window.location.reload(true);
+    }, 3000)
 }
