@@ -43,6 +43,7 @@ function onLoadArticles() {
     .then(articles => {
       if (articles.length === 0) {
         myError('Wrong request!');
+        loadMoreBtn.hide();
         reloadOnError();
         return;
       }
